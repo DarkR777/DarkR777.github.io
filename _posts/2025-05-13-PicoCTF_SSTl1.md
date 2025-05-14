@@ -41,7 +41,10 @@ Our goal is to inject Jinja2 expressions to get the server to execute arbitrary 
 
 The page asks for input and returns it rendered back. This suggests it may be vulnerable to SSTI.
 
-![Initial Site](_data/images/Screenshot_2025-05-13_14_46_53.png)
+![Initial Site](images/Screenshot_2025-05-13_14_46_53.png)
+
+
+![The site](images/Screenshot_2025-05-13_14_48_45.png)
 
 
 
@@ -49,11 +52,14 @@ The page asks for input and returns it rendered back. This suggests it may be vu
 
 We enter a basic test string: 
 
-**&#123;&#123;7*7&#125;&#125;**
+**&#123;&#123;7*8&#125;&#125;**
 
-If the site returns `49`, then SSTI is confirmed.
+If the site returns `56`, then SSTI is confirmed.
 
-![SSTI Test](_data/images/Screenshot_2025-05-13_14_51_15.png)
+![SSTI Test](images/Screenshot_2025-05-13_14_51_15.png)
+
+
+![test result](images/Screenshot_2025-05-13_14_51_21.png)
 
 
 
@@ -67,7 +73,7 @@ To escalate, we inject the following payload to access built-ins:
 
 This gives access to all subclasses, including `Popen`.
 
-![Subclasses Output](images/Screenshot_2025-05-13_14_48_45.png)
+
 
 
 
@@ -89,11 +95,10 @@ Eventually, we find the flag using a working payload like:
 **&#123;&#123;''.class.mro[2].subclasses()[&lt;index&gt;]("cat flag.txt", shell=True, stdout=-1).communicate()&#125;&#125;**
 
 
-![Flag Leaked](images/Screenshot_2025-05-13_14_51_15.png)
 
 And finally...
 
-![Flag Final](images/Screenshot_2025-05-13_14_51_21.png)
+![Flag Final](images/sst1.png)
 
 
 
