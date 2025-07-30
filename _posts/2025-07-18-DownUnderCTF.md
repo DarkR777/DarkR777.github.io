@@ -3,7 +3,7 @@ layout: post
 title: DownUnderCTF_2025_Writeup
 date: 18-07-2025
 categories: [DownUnderCTF]
-tag: [CTF]
+tag: [DownUnderCTF]
 
 ---
 # 🐶 DUCTF 2025 - e-dog
